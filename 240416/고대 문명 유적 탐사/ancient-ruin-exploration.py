@@ -53,7 +53,7 @@ def BFS(i,j,num,visited):
     return []
 
 def getting(newMap, values,angle,nextangle):
-    global nextMap
+    global nextMap,nextI,nextJ
     gett = []
     visited = [[0]*5 for _ in range(5)]
     for a in range(5):
@@ -63,6 +63,7 @@ def getting(newMap, values,angle,nextangle):
                 
                 if len(changelist) >= 3 :
                     gett += changelist
+            
 
     if len(gett) > len(values) :
         values = gett
@@ -73,8 +74,8 @@ def getting(newMap, values,angle,nextangle):
             values = gett
             nextMap = copy.deepcopy(newMap)
             nextI,nextJ,nextangle = i,j,angle
-    
-    return nextMap,values
+
+    return nextMap,values,nextI,nextJ,nextangle
 
 
 
@@ -103,10 +104,14 @@ for K in range(k):
                 # for q in range(5):
                 #     print(newMap[q])
 
-                nextMap, values = getting(newMap,values,angle,nextangle)
+                nextMap, values,nextI,nextJ,nextangle = getting(newMap,values,angle,nextangle)
+                # print("최종 nextI,nextJ,nextangle :",nextI,nextJ,nextangle)
+                
 
 
-    # print("3. get relics")
+
+
+    # print("get relics before change Map")
     # for q in range(5):
     #     print(nextMap[q])
 
@@ -119,8 +124,8 @@ for K in range(k):
         nextMap[i][j] = new[0]
         del new[0]
     # print("left new relics: ",new)
-
-    # print("5. change relics")
+    # print("get values :",values)
+    # print("5. change relics after Map")
     # for q in range(5):
     #     print(nextMap[q])
 
@@ -128,7 +133,7 @@ for K in range(k):
     while len(values) >= 3 :    
         newMap = copy.deepcopy(nextMap)
         values = []
-        nextMap, values = getting(newMap,values,angle,nextangle)
+        nextMap, values,nextI,nextJ,nextangle  = getting(newMap,values,angle,nextangle)
         values.sort(key= lambda x : (x[1],-x[0]))
         ans += len(values)
         # print("now values :", values)
@@ -146,5 +151,5 @@ for K in range(k):
     # for q in range(5):
     #     print(nextMap[q])
     Map = copy.deepcopy(nextMap)
-
+    # print('------------------------')
     print(ans,end =' ')
